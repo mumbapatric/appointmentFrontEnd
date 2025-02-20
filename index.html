@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>APPOINTMENT SS</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="styles/index.css" />
+  </head>
+  <body>
+    <h2>AJAX Request using jQuery</h2>
+    <button id="fetchData">Fetch Data</button>
+    <div id="data-container"></div>
+
+    <script>
+      $(document).ready(function () {
+        $("#fetchData").click(function () {
+          $.ajax({
+            url: "http://localhost:8080/api/v1/doctors",
+            type: "GET",
+
+            success: function (data) {
+              if (data.length === 0) {
+                $("#data-container").html(`<h3>No data</h3>`);
+                return;
+              }
+
+              $("#data-container").html(
+                `<h3>${data.title}</h3><p>${data.body}</p>`
+              );
+            },
+
+            error: function () {
+              $("#data-container").html(
+                "<p style='color:red;'>Error fetching data</p>"
+              );
+            },
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

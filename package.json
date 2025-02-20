@@ -1,0 +1,11 @@
+{
+  "name": "appointment",
+  "version": "1.0.0",
+  "description": "asdlkfjalskdfkl",
+  "main": "index.html",
+  "author": "mumba",
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js"
+  }
+}
