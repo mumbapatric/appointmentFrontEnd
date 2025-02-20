@@ -36,4 +36,3 @@
             activeLink.parentElement.classList.add('active');
         }
     });
-// Compare this snippet from src/main/resources/static/java%20script/patient-dashboard.js:
