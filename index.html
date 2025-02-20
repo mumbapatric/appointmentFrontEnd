@@ -3,73 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>APPOINTMENT SS</title>
+    <title>Appointment App</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="styles/index.css" />
   </head>
   <body>
-    <h2>AJAX Request using jQuery</h2>
-    <button id="fetchData">Fetch Data</button>
-    <div id="data-container"></div>
+    <h2>Doctor Patient Appointment App</h2>
 
-    <button id="getUser">View User Table</button>
-
-    <h2>Users List</h2>
-    <table border="1">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Email</th>
-        </tr>
-      </thead>
-      <tbody id="user-list">
-        <!-- User data will be loaded here -->
-      </tbody>
-    </table>
+    <button id="get-started">Get started</button>
 
     <script>
       $(document).ready(function () {
-        // window.location.href = "users-table.html";
-        const n = 1;
-        $("#getUser").click(() => {
-          sessionStorage.setItem(
-            "selectedUser",
-            JSON.stringify({
-              id: n++,
-              name: "John Doe",
-              email: "lucasmgana@example.com",
-            })
-          );
-          $("#user-list").load("users-table.html");
-        });
-      });
-    </script>
-    <script>
-      $(document).ready(function () {
-        $("#fetchData").click(function () {
-          $.ajax({
-            url: "http://localhost:8080/api/v1/doctors",
-            type: "GET",
-
-            success: function (data) {
-              if (data.length === 0) {
-                $("#data-container").html(`<h3>No data</h3>`);
-                return;
-              }
-
-              $("#data-container").html(
-                `<h3>${data.title}</h3><p>${data.body}</p>`
-              );
-            },
-
-            error: function () {
-              $("#data-container").html(
-                "<p style='color:red;'>Error fetching data</p>"
-              );
-            },
-          });
-        });
+        $("#get-started").click(
+          () => (window.location.href = "src/pages/auth/auth-page.html")
+        );
       });
     </script>
   </body>

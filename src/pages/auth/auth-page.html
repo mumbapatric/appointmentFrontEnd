@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  </head>
+  <body>
+
+
+    <h2>Get Started</h2>
+    <div style="display: flex; flex-direction: row; gap: 3px">
+      <button id="lgn-btn">Login</button
+      ><button id="rgstr-btn">Register</button>
+    </div>
+
+    <div id="content"></div>
+    <!-- script -->
+    <script>
+      $(document).ready(function () {
+        $("#lgn-btn").click(() =>
+          $("#content").load("login.html")
+        );
+
+        $("#rgstr-btn").click(() => {
+          $("#content").load("register.html");
+        });
+      });
+    </script>
+  </body>
+</html>
