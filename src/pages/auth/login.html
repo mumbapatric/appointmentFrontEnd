@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+</head>
+<body>
+
+  <div class="container">
+    <div class="logo">
+      <img src="" alt="Company Logo" />
+    </div>
+    <h1>Welcome Back</h1>
+    
+    <form id="auth-form">
+      <input type="text" value="doc1" id="username" name="username" placeholder="Username" required />
+      <input type="password" value="securepassword123" id="password" name="password" placeholder="Password" required />
+      
+      <div class="remember-me">
+        <input type="checkbox" id="remember" name="remember" />
+        <label for="remember">Remember me</label>
+      </div>
+      
+      <button type="submit" id="lgnbtn">Log In</button>
+    </form>
+
+    <div class="forgot-password">
+      <a href="#">Forgot password?</a>
+    </div>
+    <div class="toggle-form">
+      <a href="register.html">Don't have an account? Sign up</a>
+    </div>
+  </div>
+
+  <script>
+    $("#auth-form").submit(function (e) {
+      e.preventDefault(); // Prevent page reload
+
+      const username = $("#username").val();
+      const password = $("#password").val();
+
+      if (!username || !password) {
+        alert("Please enter both username and password.");
+        return;
+      }
+
+      $.ajax({
+        url: "http://localhost:8080/api/v1/auth/login",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify({ username, password }),
+        success: function (data) {
+          if (!data.token) {
+            alert("Login failed: No token received");
+            return;
+          }
+
+          console.log("Login successful:", data);
+
+          // Store token & role
+          localStorage.setItem("token", data.token);
+          localStorage.setItem("role", data.role);
+
+          try {
+            // Decode the JWT token
+            const decodedToken = jwt_decode(data.token);
+            console.log("Decoded Token:", decodedToken);
+
+            // Store userId from the token
+            localStorage.setItem("userId", decodedToken.userId);
+
+            // Store user data in session storage
+            sessionStorage.setItem("logdin-user", JSON.stringify(decodedToken));
+          } catch (error) {
+            console.error("Error decoding token:", error);
+          }
+
+          alert("Login successful");
+
+          // Redirect based on role
+          if (data.role === "ROLE_DOCTOR") {
+            window.location.href = "/src/components/dashboard/doctor-dashboard.html";
+          } else if (data.role === "ROLE_PATIENT") {
+            window.location.href = "/src/components/dashboard/patients-dashboard.html";
+          } else {
+            window.location.href = "/login.html";
+          }
+        },
+        error: function (jqXHR) {
+          console.error("Login error:", jqXHR);
+          let errorMessage = "Unauthorized access";
+          if (jqXHR.status === 401) {
+            errorMessage = "Invalid username or password";
+          }
+          alert(errorMessage);
+        },
+      });
+    });
+  </script>
+
+</body>
+</html>

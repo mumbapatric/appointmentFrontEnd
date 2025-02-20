@@ -1,88 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Doctor Dashboard</title>
-    <link rel="stylesheet" href="/src/styles/doctor-dashboard.css">
+    <link rel="stylesheet" href="/src/styles/doctor-dashboard.css" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-</head>
-<body>
-<div class="dashboard">
-    <aside class="sidebar">
+    <script src="/src/js/comn/auth.js"></script>
+  </head>
+  <body>
+    <div class="dashboard">
+      <aside class="sidebar">
         <h2>MedPortal</h2>
         <nav>
-            <ul>
-                <li><a href="#">Dashboard</a></li>
-                <li><a href="#">Patients</a></li>
-                <li><a href="#" id="appointments-link">Appointments</a></li>
-                <li><a href="#">Medical Records</a></li>
-                <li><a href="#">Messages</a></li>
-                <li><a href="#">Settings</a></li>
-            </ul>
+          <ul>
+            <li><a href="#">Dashboard</a></li>
+            <li><a href="#">Patients</a></li>
+            <li><a href="#" id="appointments-link">Appointments</a></li>
+            <li><a href="#">Medical Records</a></li>
+            <li><a href="#">Messages</a></li>
+            <li><a href="#">Settings</a></li>
+            <li><a href="#">Settings</a></li>
+            <li>
+              <button
+                style="cursor: pointer; padding: 4px"
+                id="logout-btn"
+              >
+                LOGOUT
+              </button>
+            </li>
+          </ul>
         </nav>
-    </aside>
-    <main class="main-content">
+      </aside>
+      <main class="main-content">
         <header class="header">
-            <h1>Dashboard</h1>
-            <div class="user-info">
-
-            </div>
+          <h1>Dashboard</h1>
+          <div class="user-info"></div>
         </header>
         <section class="summary-cards">
-            <div class="card">
-                <h3>Total Patients</h3>
-                <p id="total-patients"></p>
-            </div>
-            <div class="card">
-                <h3>Upcoming Appointments</h3>
-                <p id="upcoming-appointments"></p>
-                <button class="btn btn-primary" onclick="showAppointments()">View Details</button>
-            </div>
-            <div class="card">
-                <h3>Today's Appointments</h3>
-                <p id="todays-appointments"></p>
-            </div>
-            <div class="card">
-                <h3>New Messages</h3>
-                <p id="new-messages"></p>
-            </div>
+          <div class="card">
+            <h3>Total Patients</h3>
+            <p id="total-patients"></p>
+          </div>
+          <div class="card">
+            <h3>Upcoming Appointments</h3>
+            <p id="upcoming-appointments"></p>
+            <button class="btn btn-primary" onclick="showAppointments()">
+              View Details
+            </button>
+          </div>
+          <div class="card">
+            <h3>Today's Appointments</h3>
+            <p id="todays-appointments"></p>
+          </div>
+          <div class="card">
+            <h3>New Messages</h3>
+            <p id="new-messages"></p>
+          </div>
         </section>
         <section class="appointments">
-            <h2>Today's Appointments</h2>
-            <div class="appointments-list">
-                <!-- Fetched appointments data will be displayed here -->
-            </div>
+          <h2>Today's Appointments</h2>
+          <div class="appointments-list">
+            <!-- Fetched appointments data will be displayed here -->
+          </div>
         </section>
         <section class="patients-list">
-            <!-- Fetched patients data will be displayed here -->
+          <!-- Fetched patients data will be displayed here -->
         </section>
-    </main>
-</div>
+      </main>
+    </div>
 
-<!-- Modal for Upcoming Appointments -->
-<div id="appointmentsModal" class="modal">
-    <div class="modal-content">
+    <!-- Modal for Upcoming Appointments -->
+    <div id="appointmentsModal" class="modal">
+      <div class="modal-content">
         <span class="close" onclick="closeModal()">&times;</span>
         <h2>Pending Appointments</h2>
         <table class="appointment-table">
-            <thead>
+          <thead>
             <tr>
-                <th>Patient Name</th>
-                <th>Date</th>
-                <th>Time</th>
-                <th>Type</th>
-                <th>Actions</th>
+              <th>Patient Name</th>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Type</th>
+              <th>Actions</th>
             </tr>
-            </thead>
-            <tbody id="upcoming-appointments-table">
+          </thead>
+          <tbody id="upcoming-appointments-table">
             <!-- Fetched appointments data will be displayed here -->
-            </tbody>
+          </tbody>
         </table>
+      </div>
     </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
-<script src="/src/js/doctor-dashboard.js"></script>
-</body>
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+    <script src="/src/js/doctor-dashboard.js"></script>
+  </body>
 </html>
