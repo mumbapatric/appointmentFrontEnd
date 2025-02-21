@@ -29,7 +29,7 @@ $(document).ready(function(){
                     window.location.href = '/src/components/dashboard/doctor-dashboard.html';
             }
             else if (data.role === 'ROLE_PATIENT'){
-                window.location.href = '/src/components/dashboard/patients-dashboard.html';
+                window.location.href = '/src/components/dashboard/patient-dashboard.html';
             }
             else{
               redirect('http://localhost:8080/login.html');
