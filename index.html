@@ -1,43 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>APPOINTMENT SS</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Patient Appointment System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/src/styles/index.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="styles/index.css" />
-  </head>
-  <body>
-    <h2>AJAX Request using jQuery</h2>
-    <button id="fetchData">Fetch Data</button>
-    <div id="data-container"></div>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <img src="/images/logo.png" alt="Company Logo">
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <div class="hero-section">
+            <div class="container">
+                <h1>Welcome to Doctor Patient Appointment System</h1>
+                <p>Book your appointments with ease and manage your medical history.</p>
+                <button id="get-started" class="cta-btn">Get Started</button>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Doctor Patient Appointment System. All rights reserved.</p>
+        </div>
+    </footer>
 
     <script>
-      $(document).ready(function () {
-        $("#fetchData").click(function () {
-          $.ajax({
-            url: "http://localhost:8080/api/v1/doctors",
-            type: "GET",
-
-            success: function (data) {
-              if (data.length === 0) {
-                $("#data-container").html(`<h3>No data</h3>`);
-                return;
-              }
-
-              $("#data-container").html(
-                `<h3>${data.title}</h3><p>${data.body}</p>`
-              );
-            },
-
-            error: function () {
-              $("#data-container").html(
-                "<p style='color:red;'>Error fetching data</p>"
-              );
-            },
-          });
+        $(document).ready(function () {
+            $("#get-started").click(function () {
+                window.location.href = "src/pages/auth/auth-page.html";
+            });
         });
-      });
     </script>
-  </body>
+</body>
 </html>

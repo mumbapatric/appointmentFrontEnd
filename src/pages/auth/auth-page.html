@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Authentication</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/src/styles/auth-page.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+    <div class="auth-container">
+      <h2>Get Started</h2>
+      <div class="auth-buttons">
+        <button id="lgn-btn" class="auth-btn">Login</button>
+        <button id="rgstr-btn" class="auth-btn">Register</button>
+      </div>
+      <div id="content" class="auth-content"></div>
+    </div>
+
+    <script>
+      $(document).ready(function () {
+        $("#lgn-btn").click(function () {
+          window.open("/src/pages/auth/login.html", "_blank");
+        });
+
+        $("#rgstr-btn").click(function () {
+          window.open("/src/pages/auth/register.html", "_blank");
+        });
+      });
+    </script>
+  </body>
+</html>
