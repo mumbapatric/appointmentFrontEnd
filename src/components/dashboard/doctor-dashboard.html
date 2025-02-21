@@ -6,6 +6,7 @@
     <title>Doctor Dashboard</title>
     <link rel="stylesheet" href="/src/styles/doctor-dashboard.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script> <!-- Include jwt-decode library -->
 </head>
 <body>
 <div class="dashboard">
@@ -15,7 +16,7 @@
             <ul>
                 <li><a href="#">Dashboard</a></li>
                 <li><a href="#">Patients</a></li>
-                <li><a href="#" id="appointments-link">Appointments</a></li>
+                <li><a href="/src/pages/doctor/view-appointment.html" id="appointments-link">Appointments</a></li>
                 <li><a href="#">Medical Records</a></li>
                 <li><a href="#">Messages</a></li>
                 <li><a href="#">Settings</a></li>
@@ -26,7 +27,7 @@
         <header class="header">
             <h1>Dashboard</h1>
             <div class="user-info">
-
+                <!-- User info will be displayed here -->
             </div>
         </header>
         <section class="summary-cards">
@@ -82,7 +83,6 @@
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
 <script src="/src/js/doctor-dashboard.js"></script>
 </body>
 </html>

@@ -168,4 +168,40 @@
             text-decoration: none;
             cursor: pointer;
         }
- 
+ /* General styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+/* Table styles */
+.patients-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 18px;
+    text-align: left;
+}
+
+.patients-table th, .patients-table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+}
+
+.patients-table th {
+    background-color: #f2f2f2;
+}
+
+.patients-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.patients-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.patients-table th, .patients-table td {
+    text-align: center;
+}
