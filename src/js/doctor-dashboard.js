@@ -113,8 +113,8 @@ function displayPendingAppointments(appointments) {
             const appointmentRow = $('<tr>').html(`
                 <td>${appointment.patient.name}</td>
                 <td>${appointment.patient.gender}</td>
-                <td>${appointment.appointmentDateTime.split('T')[0]}</td>
-                <td>${appointment.appointmentDateTime.split('T')[1]}</td>
+                <td>${appointment.date}</td>
+                <td>${appointment.time}</td>
                 <td>${appointment.status}</td>
                 <td>
                     <button class="btn btn-secondary" onclick="editAppointment(${appointment.id})">Edit</button>
@@ -144,12 +144,11 @@ function confirmAppointment(id) {
     const newDate = prompt('Enter new appointment date (YYYY-MM-DD):');
     const newTime = prompt('Enter new appointment time (HH:MM):');
     if (newDate && newTime) {
-        const newDateTime = `${newDate}T${newTime}:00`;
         $.ajax({
             url: `http://localhost:8080/api/v1/appointments/${id}/confirm`,
             type: 'PUT',
             contentType: 'application/json',
-            data: JSON.stringify({ appointmentDateTime: newDateTime, status: 'CONFIRMED' }),
+            data: JSON.stringify({ date: newDate, time: newTime, status: 'CONFIRMED' }),
             success: function(response) {
                 alert('Appointment confirmed and date/time updated successfully');
                 fetchPendingAppointments(localStorage.getItem('doctorId')); // Refresh the appointments list

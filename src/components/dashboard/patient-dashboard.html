@@ -18,6 +18,7 @@
                 <li><a href="#" data-target="appointment-history"><i class="fas fa-history"></i> Appointment History</a></li>
                 <li><a href="#" data-target="medical-history"><i class="fas fa-file-medical"></i> Medical History</a></li>
                 <li><a href="#" data-target="book-appointment"><i class="fas fa-calendar-plus"></i> Book Appointment</a></li>
+                <li><a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
         </nav>
     </aside>
@@ -50,26 +51,14 @@
                         <th>Doctor Name</th>
                         <th>Specialization</th>
                         <th>Consultancy Fee</th>
-                        <th>Appointment Date / Time</th>
-                        <th>Appointment Creation Date</th>
+                        <th>Appointment Date</th>
+                        <th>Appointment Time</th>
                         <th>Current Status</th>
                         <th>Action</th>
                     </tr>
                     </thead>
                     <tbody id="appointmentTableBody">
-                    <tr>
-                        <td>1</td>
-                        <td>Dr. Smith</td>
-                        <td>Cardiology</td>
-                        <td>$100</td>
-                        <td>2024-12-31 / 10:00 AM</td>
-                        <td>2024-12-25</td>
-                        <td>Confirmed</td>
-                        <td>
-                            <button class="action-btn view-btn">View</button>
-                            <button class="action-btn cancel-btn">Cancel</button>
-                        </td>
-                    </tr>
+                        <!-- Data will be populated dynamically from the database -->
                     </tbody>
                 </table>
             </div>
