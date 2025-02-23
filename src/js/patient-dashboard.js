@@ -185,8 +185,18 @@ $(document).ready(function() {
 
     $('#logout-btn').on('click', function() {
         localStorage.removeItem('token');
-        window.location.href = '/login.html'; // Redirect to the login page
+        window.location.href = '/src/pages/auth/login.html'; // Redirect to the login page
     });
 
     fetchSpecializations();
+});
+
+$(document).ready(function(){
+    const token = localStorage.getItem('token');
+    if(token){
+        const user = jwt_decode(token);
+        const userName = user.name ? (user.roles)==='ROLE_PATIENT' ? user.name :user.name : 'User';
+        $('.user-info').text('Welcome ' + userName);
+    }
+
 });

@@ -60,7 +60,7 @@ $(document).ready(function() {
         return;
     }
 
-    const token = localStorage.getItem('token'); // Assuming token is stored in localStorage after login
+    const token = localStorage.getItem('token'); // extract the token from localStorage
     if (token) {
         const decodedToken = jwt_decode(token);
         const userId = decodedToken.userId;
@@ -159,7 +159,7 @@ function confirmAppointment(id) {
             }
         });
     } else {
-        alert('Appointment date/time not updated');
+        alert('Appointment failed to be updated');
     }
 }
 
@@ -186,4 +186,21 @@ $(window).click(function(event) {
     if (event.target === $('#appointments-modal')[0]) {
         $('#appointments-modal').hide();
     }
+});
+
+$(document).ready(function() {
+    const token = localStorage.getItem('token');
+    if (token) {
+        const user = jwt_decode(token);
+        const userName = user.name ? (user.role === 'ROLE_DOCTOR' ? 'Dr. ' + user.name : user.name) : 'User';
+        $('.user-info').text('Welcome ' + userName);
+    } else {
+        window.location.href = '/src/pages/auth/login.html';
+    }
+});
+
+$('#logout-btn').on('click', function() {
+    localStorage.removeItem('token');
+    window.location.href = '/src/pages/auth/login.html'; // Redirect to the login page
+    alert('You have successfully logged out');
 });

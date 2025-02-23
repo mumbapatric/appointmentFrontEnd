@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="/src/styles/patient-dashboard.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script> <!-- Include jwt-decode library -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <body>
 <div class="container">
@@ -25,7 +27,12 @@
     <main class="content">
         <!-- Sections: Dashboard, Appointment History, etc. -->
         <div id="dashboard" class="dashboard section active">
-            <h1>Dashboard</h1>
+            <header class="header">
+                <h1>Dashboard</h1>
+                <div class="user-info">
+                    <!-- User info will be displayed here -->
+                </div>
+            </header>
             <div class="dashboard-grid">
                 <div class="profile-section">
                     <h2><i class="fas fa-user"></i> My Profile</h2>
