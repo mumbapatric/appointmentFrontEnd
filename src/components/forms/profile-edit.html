@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/src/styles/profile-edit.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container mt-5">
+    <h2>Edit Profile</h2>
+    <form id="profileForm">
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="phone">Phone Number:</label>
+            <input type="tel" id="phone" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Update Profile</button>
+    </form>
+</div>
+<script src="/src/js/profile-edit.js"></script>
+<script>
+    $(document).ready(function() {
+        const token = localStorage.getItem('token');
+        if (token) {
+            const decoded = jwt_decode(token);
+            $('#email').val(decoded.email);
+            $('#phone').val(decoded.phone);
+        }
+    });
+</script>
+</body>
+</html>

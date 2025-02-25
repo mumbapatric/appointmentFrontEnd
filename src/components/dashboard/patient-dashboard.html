@@ -20,6 +20,13 @@
                 <li><a href="#" data-target="appointment-history"><i class="fas fa-history"></i> Appointment History</a></li>
                 <li><a href="#" data-target="medical-history"><i class="fas fa-file-medical"></i> Medical History</a></li>
                 <li><a href="#" data-target="book-appointment"><i class="fas fa-calendar-plus"></i> Book Appointment</a></li>
+                <li>
+                    <a href="#" id="settings-link"><i class="fas fa-cog"></i> Settings</a>
+                    <ul id="settings-dropdown" class="dropdown-menu">
+                        <li><a href="/src/components/forms/profile-edit.html">Edit Profile</a></li>
+                        <li><a href="/src/components/forms/change-password.html">Change Password</a></li>
+                    </ul>
+                </li>
                 <li><a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
         </nav>
@@ -138,5 +145,15 @@
     </main>
 </div>
 <script src="/src/js/patient-dashboard.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#settings-link').click(function(e) {
+            e.preventDefault();
+            console.log('Settings link clicked'); // Debugging line
+            $('#settings-dropdown').toggleClass('show');
+            console.log('Dropdown class:', $('#settings-dropdown').attr('class')); // Debugging line
+        });
+    });
+</script>
 </body>
 </html>

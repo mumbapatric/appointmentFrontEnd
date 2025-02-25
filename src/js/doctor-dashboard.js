@@ -14,7 +14,7 @@ function fetchPatients() {
     });
 }
 
-// Display total paients patients in the dashboard
+// Display total patients in the dashboard
 function displayPatients(patients) {
     const patientContainer = $('.patients-list');
     patientContainer.empty(); // clear the patient container
@@ -45,7 +45,7 @@ function fetchPendingAppointments(doctorId) {
             console.log('All appointments:', appointments);
             const pendingAppointments = appointments.filter(appointment => appointment.status === 'PENDING');
             displayPendingAppointments(pendingAppointments);
-            showAppointments();
+            $('#todays-appointments').text(pendingAppointments.length);
         },
         error: function(xhr, status, error) {
             console.error('failed to fetch appointments', error);
@@ -73,6 +73,10 @@ $(document).ready(function() {
                     $('#appointments-link').click(function() {
                         fetchPendingAppointments(doctorId);
                     });
+                    $('.btn-primary').click(function() {
+                        fetchPendingAppointments(doctorId);
+                        showAppointments();
+                    });
                 } else {
                     console.error('Doctor ID could not be fetched');
                 }
@@ -85,6 +89,19 @@ $(document).ready(function() {
     } else {
         console.error('Token is not available in localStorage');
     }
+
+    // Settings navigation
+    $('#settings-link').click(function() {
+        $('#settings-dropdown').toggleClass('show');
+        $('#logout-btn').toggleClass('shift-down');
+    });
+
+    $(window).click(function(event) {
+        if (!event.target.matches('#settings-link')) {
+            $('#settings-dropdown').removeClass('show');
+            $('#logout-btn').removeClass('shift-down');
+        }
+    });
 });
 
 // Display pending appointments in the dashboard
@@ -106,7 +123,7 @@ function displayPendingAppointments(appointments) {
     const upcomingAppointmentsContainer = $('#upcoming-appointments-table');
     upcomingAppointmentsContainer.empty();
     if (appointments.length === 0) {
-        const emptyRow = $('<tr>').html(`<td colspan="5">No pending appointments</td>`);
+        const emptyRow = $('<tr>').html(`<td colspan="6">No pending appointments</td>`);
         upcomingAppointmentsContainer.append(emptyRow);
     } else {
         appointments.forEach(appointment => {
@@ -128,11 +145,11 @@ function displayPendingAppointments(appointments) {
 }
 
 function showAppointments() {
-    $('#appointments-modal').show();
+    $('#appointmentsModal').show();
 }
 
 function closeModal() {
-    $('#appointments-modal').hide();
+    $('#appointmentsModal').hide();
     window.location.href = '/src/components/dashboard/doctor-dashboard.html'; // Redirect to the dashboard
 }
 
@@ -183,8 +200,8 @@ function cancelAppointment(id) {
 }
 
 $(window).click(function(event) {
-    if (event.target === $('#appointments-modal')[0]) {
-        $('#appointments-modal').hide();
+    if (event.target === $('#appointmentsModal')[0]) {
+        $('#appointmentsModal').hide();
     }
 });
 
