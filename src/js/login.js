@@ -5,6 +5,9 @@ $(document).ready(function(){
         const username = form.find('input[name="username"]').val();
         const password = form.find('input[name="password"]').val();
 
+        // Show full-page loader
+        $('#full-page-loader').show();
+
         $.ajax({
             url: 'http://localhost:8080/api/v1/auth/login',
             type: 'POST',
@@ -28,7 +31,11 @@ $(document).ready(function(){
                     window.location.href = '/src/components/dashboard/doctor-dashboard.html';
                 } else if (data.role === 'ROLE_PATIENT') {
                     window.location.href = '/src/components/dashboard/patient-dashboard.html';
-                } else {
+                }
+                else if (data.role === 'ROLE_ADMIN') {
+                    window.location.href = '/src/components/dashboard/admin-dashboard.html';
+                }
+                 else {
                     window.location.href = '/src/pages/auth/login.html';
                 }
             },
@@ -39,6 +46,12 @@ $(document).ready(function(){
                     errorMessage = 'Invalid username or password';
                 }
                 alert(errorMessage);
+            },
+            complete: function() {
+                // Hide full-page loader after user clicks "OK" on alert
+                $(document).one('click', function() {
+                    $('#full-page-loader').hide();
+                });
             }
         });
     });

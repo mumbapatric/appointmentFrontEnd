@@ -22,14 +22,18 @@
             <label for="remember">Remember me</label>
         </div>
         <button type="submit">Log In</button>
+        
+        <div id="loader" class="loader" style="display: none;"></div>
     </form>
     <div class="forgot-password">
-        <a href="#">Forgot password?</a>
+        <a href="/src/pages/auth/forget-password.html">Forgot password?</a>
     </div>
     <div class="toggle-form">
         <a href="/src/pages/auth/register.html">Don't have an account? Sign up</a>
     </div>
 </div>
+
+<div id="full-page-loader" class="full-page-loader" style="display: none;"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
