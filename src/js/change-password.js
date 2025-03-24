@@ -28,7 +28,7 @@ $(document).ready(function() {
         };
 
         $.ajax({
-            url: `http://localhost:8080/api/v1/users/${userId}/change-password`,
+            url: `http://192.168.1.133:8080/api/v1/users/${userId}/change-password`,
             type: 'PUT',
             contentType: 'application/json',
             data: JSON.stringify(passwordData),

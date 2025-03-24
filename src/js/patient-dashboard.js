@@ -47,7 +47,7 @@ $(document).ready(function() {
 
     function fetchSpecializations() {
         $.ajax({
-            url: 'http://localhost:8080/api/v1/doctors',
+            url: 'http://192.168.1.133:8080/api/v1/doctors',
             type: 'GET',
             success: function(response) {
                 if (Array.isArray(response.data)) {
@@ -73,7 +73,7 @@ $(document).ready(function() {
             return;
         }
         $.ajax({
-            url: `http://localhost:8080/api/v1/doctors/specialization?query=${specialization}`,
+            url: `http://192.168.1.133:8080/api/v1/doctors/specialization?query=${specialization}`,
             type: 'GET',
             success: function(response) {
                 const doctorSelect = $('#doctor');
@@ -94,7 +94,7 @@ $(document).ready(function() {
 
     function fetchPatientDetails(userId) {
         return $.ajax({
-            url: `http://localhost:8080/api/v1/patients/user/${userId}`,
+            url: `http://192.168.1.133:8080/api/v1/patients/user/${userId}`,
             type: 'GET'
         });
     }
@@ -112,7 +112,7 @@ $(document).ready(function() {
                 patient: patient
             };
             $.ajax({
-                url: 'http://localhost:8080/api/v1/appointments',
+                url: 'http://192.168.1.133:8080/api/v1/appointments',
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(appointmentData),
@@ -130,7 +130,7 @@ $(document).ready(function() {
     function fetchAndDisplayAppointments() {
         fetchPatientDetails(userId).then(function(patient) {
             $.ajax({
-                url: `http://localhost:8080/api/v1/appointments/patient/${patient.id}`,
+                url: `http://192.168.1.133:8080/api/v1/appointments/patient/${patient.id}`,
                 method: 'GET',
                 success: function(data) {
                     const appointmentTableBody = $('#appointmentTableBody');
@@ -170,7 +170,7 @@ $(document).ready(function() {
     function cancelAppointment(appointmentId) {
         if (confirm('Are you sure you want to cancel this appointment?')) {
             $.ajax({
-                url: `http://localhost:8080/api/v1/appointments/${appointmentId}`,
+                url: `http://192.168.1.133:8080/api/v1/appointments/${appointmentId}`,
                 type: 'DELETE',
                 success: function() {
                     alert('Appointment cancelled successfully');
@@ -183,11 +183,7 @@ $(document).ready(function() {
         }
     }
 
-    $('#logout-btn').on('click', function() {
-        localStorage.removeItem('token');
-        window.location.href = '/src/pages/auth/login.html'; // Redirect to the login page
-    });
-
+   
     fetchSpecializations();
 });
 
@@ -225,7 +221,7 @@ if (token) {
 
     // Fetch user data and populate values
     $.ajax({
-        url: `http://localhost:8080/api/v1/users/${userId}`,
+        url: `http://192.168.1.133:8080/api/v1/users/${userId}`,
         type: 'GET',
         success: function(user) {
             console.log('Fetched user data:', user);
@@ -249,7 +245,7 @@ if (token) {
         console.log('Updated profile data:', updatedProfile);
 
         $.ajax({
-            url: `http://localhost:8080/api/v1/users/${userId}`,
+            url: `http://192.168.1.133:8080/api/v1/users/${userId}`,
             type: 'PUT',
             contentType: 'application/json',
             data: JSON.stringify(updatedProfile),
@@ -266,5 +262,23 @@ if (token) {
 } else {
     alert('User not logged in');
 }
+
+$('#logout-btn').on( 'click',function() {
+    Swal.fire({
+        title: 'Are you sure you want to logout?',
+        showCancelButton: true,
+        confirmButtonText: `Logout`,
+        cancelButtonText: `Cancel`,
+        icon: 'warning'
+    }).then((result) => {
+        if(result.isConfirmed) {
+            localStorage.removeItem('token');
+            window.location.href = '/src/pages/auth/login.html';
+        }
+        
+
+      });
+}
+);   
 
 

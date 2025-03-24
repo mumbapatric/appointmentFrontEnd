@@ -18,7 +18,7 @@ function sendResetLink() {
     const button = $('#forget-password-form button');
     button.prop('disabled', true); // Disable the button
     $.ajax({
-        url: 'http://localhost:8080/api/v1/users/forgot-password',
+        url: 'http://192.168.1.133:8080/api/v1/users/forgot-password',
         type: 'POST',
         data: { email: email },
         success: function(response) {
@@ -54,7 +54,7 @@ function resetPassword() {
     button.prop('disabled', true); // Disable the button
 
     $.ajax({
-        url: 'http://localhost:8080/api/v1/users/reset-password',
+        url: 'http://192.168.1.133:8080/api/v1/users/reset-password',
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify({ token: token, newPassword: newPassword }),

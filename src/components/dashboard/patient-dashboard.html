@@ -6,6 +6,7 @@
     <title>Patient Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="/src/styles/patient-dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- Include SweetAlert2 library -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script> <!-- Include jwt-decode library -->
 </head>
@@ -50,6 +51,10 @@
                 <div class="book-appointment-section">
                     <h2>Book Appointment</h2>
                     <button class="book-appointment-btn" data-target="book-appointment">Book New Appointment</button>
+                </div>
+                <div class="chat-section">
+                    <h2>Chat with Doctor</h2>
+                    <button class="chat-doctor-btn" onclick="openChat()">Chat Now</button>
                 </div>
             </div>
         </div>
@@ -126,6 +131,17 @@
         </div>
     </main>
 </div>
+
+<!-- Chat Modal -->
+<div id="chatModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeChat()">&times;</span>
+        <div id="chat-container" class="chat-container"></div>
+        <input type="text" id="message-input" placeholder="Type your message here...">
+        <button id="send-message-btn">Send</button>
+    </div>
+</div>
+
 <script src="/src/js/patient-dashboard.js"></script>
 </body>
 </html>

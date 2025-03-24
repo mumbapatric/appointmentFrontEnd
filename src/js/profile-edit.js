@@ -13,7 +13,7 @@ $(document).ready(function() {
 
         // Fetch user data and populate values
         $.ajax({
-            url: `http://localhost:8080/api/v1/users/${userId}`,
+            url: `http://192.168.1.133:8080/api/v1/users/${userId}`,
             type: 'GET',
             success: function(user) {
                 console.log('Fetched user data:', user);
@@ -37,7 +37,7 @@ $(document).ready(function() {
             console.log('Updated profile data:', updatedProfile);
 
             $.ajax({
-                url: `http://localhost:8080/api/v1/users/${userId}`,
+                url: `http://192.168.1.133:8080/api/v1/users/${userId}`,
                 type: 'PUT',
                 contentType: 'application/json',
                 data: JSON.stringify(updatedProfile),

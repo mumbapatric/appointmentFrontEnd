@@ -1,7 +1,7 @@
 // Fetch patient data from the server
 function fetchPatients() {
     $.ajax({
-        url: 'http://localhost:8080/api/v1/patients',
+        url: 'http://192.168.1.133:8080/api/v1/patients',
         type: 'GET',
         success: function(patients) {
             console.log('fetched patients', patients); // log the patients to the console
@@ -24,7 +24,7 @@ function displayPatients(patients) {
 function fetchDoctorId(userId) {
     return new Promise((resolve, reject) => {
         $.ajax({
-            url: `http://localhost:8080/api/v1/doctors/user/${userId}`,
+            url: `http://192.168.1.133:8080/api/v1/doctors/user/${userId}`,
             type: 'GET',
             success: function(doctor) {
                 resolve(doctor.id); // Resolve the doctor ID
@@ -39,7 +39,7 @@ function fetchDoctorId(userId) {
 // Fetch pending appointments for the doctor
 function fetchPendingAppointments(doctorId) {
     $.ajax({
-        url: `http://localhost:8080/api/v1/appointments/doctor/${doctorId}`,
+        url: `http://192.168.1.133:8080/api/v1/appointments/doctor/${doctorId}`,
         type: 'GET',
         success: function(appointments) {
             console.log('All appointments:', appointments);
@@ -51,6 +51,86 @@ function fetchPendingAppointments(doctorId) {
             console.error('failed to fetch appointments', error);
         }
     });
+}
+
+// Fetch messages for a specific patient using username
+function fetchMessages(username) {
+    $.ajax({
+        url: `http://192.168.1.133:8080/api/v1/messages/${username}`,
+        type: 'GET',
+        success: function(messages) {
+            displayMessages(messages);
+        },
+        error: function(xhr, status, error) {
+            console.error('Failed to fetch messages', error);
+        }
+    });
+}
+
+// Send a message to a specific patient using username
+function sendMessage(senderUsername, receiverUsername, content) {
+    $.ajax({
+        url: `http://192.168.1.133:8080/api/v1/messages/send`,
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ senderUsername: senderUsername, receiverUsername: receiverUsername, content: content }),
+        success: function(response) {
+            alert('Message sent successfully');
+            fetchMessages(receiverUsername); // Refresh the messages list
+        },
+        error: function(xhr, status, error) {
+            console.error('Failed to send message', xhr.responseText);
+            alert('Failed to send message: ' + xhr.responseText);
+        }
+    });
+}
+
+// Display messages in the chat window
+function displayMessages(messages) {
+    const chatContainer = $('#chat-container');
+    chatContainer.empty(); // clear the chat container
+    const token = localStorage.getItem('token');
+    const decodedToken = jwt_decode(token);
+    const currentUsername = decodedToken.sub; // Extract current user's username from token
+
+    messages.forEach(message => {
+        const messageItem = $('<div>').addClass('message-item').text(message.content);
+        if (message.senderUsername === currentUsername) {
+            messageItem.addClass('sent-message'); // Align to the right for sent messages
+        } else {
+            messageItem.addClass('received-message'); // Align to the left for received messages
+        }
+        chatContainer.append(messageItem);
+    });
+
+    // Scroll to the bottom of the chat container
+    chatContainer.scrollTop(chatContainer[0].scrollHeight);
+}
+
+// Open chat modal for a specific patient using username
+function openChat(receiverUsername) {
+    fetchMessages(receiverUsername);
+    $('#chatModal').show();
+    $('#send-message-btn').off('click').on('click', function() {
+        const content = $('#message-input').val();
+        const token = localStorage.getItem('token');
+        if (token) {
+            const decodedToken = jwt_decode(token);
+            const senderUsername = decodedToken.sub; // Extract senderUsername from token
+            if (content) {
+                sendMessage(senderUsername, receiverUsername, content);
+                $('#message-input').val(''); // Clear the input field
+            } else {
+                alert('Message cannot be empty');
+            }
+        } else {
+            console.error("Token not found in localStorage.");
+        }
+    });
+}
+
+function closeChat() {
+    $('#chatModal').hide();
 }
 
 $(document).ready(function() {
@@ -100,6 +180,37 @@ $(document).ready(function() {
         if (!event.target.matches('#settings-link')) {
             $('#settings-dropdown').removeClass('show');
             $('#logout-btn').removeClass('shift-down');
+        }
+    });
+
+    // Add event listener for chat buttons
+    $('.chat-doctor-btn').click(function() {
+        const patientId = localStorage.getItem('userId'); // Assuming patientId is stored in localStorage
+        openChat(patientId);
+    });
+
+    // Close chat modal when clicking outside of it
+    $(window).click(function(event) {
+        if (event.target === $('#chatModal')[0]) {
+            closeChat();
+        }
+    });
+
+    // Show chat section when messages link is clicked
+    $('#messages-link').click(function() {
+        $('.main-content > section').hide(); // Hide all sections
+        $('#chat-section').show(); // Show chat section
+        const token = localStorage.getItem('token');
+        if (token) {
+            const decodedToken = jwt_decode(token);
+            const receiverUsername = decodedToken.sub; // Extract receiverUsername from token
+            if (receiverUsername) {
+                openChat(receiverUsername);
+            } else {
+                console.error("Username is null. Cannot fetch messages.");
+            }
+        } else {
+            console.error("Token not found in localStorage.");
         }
     });
 });
@@ -162,7 +273,7 @@ function confirmAppointment(id) {
     const newTime = prompt('Enter new appointment time (HH:MM):');
     if (newDate && newTime) {
         $.ajax({
-            url: `http://localhost:8080/api/v1/appointments/${id}/confirm`,
+            url: `http://192.168.1.133:8080/api/v1/appointments/${id}/confirm`,
             type: 'PUT',
             contentType: 'application/json',
             data: JSON.stringify({ date: newDate, time: newTime, status: 'CONFIRMED' }),
@@ -183,7 +294,7 @@ function confirmAppointment(id) {
 function cancelAppointment(id) {
     if (confirm('Are you sure you want to cancel this appointment?')) {
         $.ajax({
-            url: `http://localhost:8080/api/v1/appointments/${id}/cancel`,
+            url: `http://192.168.1.133:8080/api/v1/appointments/${id}/cancel`,
             type: 'PUT',
             contentType: 'application/json',
             data: JSON.stringify({ status: 'CANCELLED' }),
@@ -216,8 +327,20 @@ $(document).ready(function() {
     }
 });
 
-$('#logout-btn').on('click', function() {
-    localStorage.removeItem('token');
-    window.location.href = '/src/pages/auth/login.html'; // Redirect to the login page
-    alert('You have successfully logged out');
-});
+$('#logout-btn').on( 'click',function() {
+    Swal.fire({
+        title: 'Are you sure you want to logout?',
+        showCancelButton: true,
+        confirmButtonText: `Logout`,
+        cancelButtonText: `Cancel`,
+        icon: 'warning'
+    }).then((result) => {
+        if(result.isConfirmed) {
+            localStorage.removeItem('token');
+            window.location.href = '/src/pages/auth/login.html';
+        }
+        
+
+      });
+}
+);
