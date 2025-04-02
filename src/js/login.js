@@ -5,6 +5,13 @@ $(document).ready(function(){
         const username = form.find('input[name="username"]').val();
         const password = form.find('input[name="password"]').val();
 
+        // Show SweetAlert loading indicator
+        Swal.fire({
+            title: 'Logging in...',
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
 
         $.ajax({
             url: 'http://192.168.1.133:8080/api/v1/auth/login',
