@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Record Management</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- Include SweetAlert2 library -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script> 
+    <link rel="stylesheet" href="/src/styles/medicalrecord.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Medical Record Management</h1>
+
+        <!-- Form to Add or Update Medical Record -->
+        <div id="form-container">
+            <h2>Add/Update Medical Record</h2>
+            <form id="medical-record-form">
+                <label for="patient-id">Patient ID:</label>
+                <input type="number" id="patient-id" name="patientId" required>
+
+                <label for="doctor-id">Doctor ID:</label>
+                <input type="number" id="doctor-id" name="doctorId" required>
+
+                <label for="record-date">Record Date:</label>
+                <input type="date" id="record-date" name="recordDate" required>
+
+                <label for="notes">Notes:</label>
+                <textarea id="notes" name="notes" required></textarea>
+
+                <button type="button" id="add-record">Add Medical Record</button>
+                <button type="button" id="update-record">Update Medical Record</button>
+            </form>
+        </div>
+
+        <!-- Section to Display All Medical Records -->
+        <div id="records-container">
+            <h2>Existing Medical Records</h2>
+            <table id="records-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Patient ID</th>
+                        <th>Doctor ID</th>
+                        <th>Record Date</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Records will be dynamically populated here -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Message Container -->
+        <div id="message-container"></div>
+    </div>
+
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/src/js/medicalrecord.js"></script>
+</body>
+</html>

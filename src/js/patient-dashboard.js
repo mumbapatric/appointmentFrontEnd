@@ -183,7 +183,10 @@ $(document).ready(function() {
         }
     }
 
-   
+    // Set the minimum date for the appointment date input
+    const today = new Date().toISOString().split('T')[0];
+    $('#date').attr('min', today);
+
     fetchSpecializations();
 });
 
@@ -263,6 +266,71 @@ if (token) {
     alert('User not logged in');
 }
 
+$(document).ready(function () {
+    const bannerKey = "announcement-banner-seen";
+    const ring = $("#announcement-ring");
+    const dropdown = $("#announcement-dropdown");
+    const list = $("#announcement-list");
+    const indicator = $("#announcement-indicator");
+    const closeBtn = $("#close-announcement");
+
+    function fetchAndShowAnnouncement() {
+        $.ajax({
+            url: 'http://192.168.1.133:8080/api/v1/admin/latest',
+            method: 'GET',
+            success: function (data) {
+                if (!data) return;
+
+                const announcements = Array.isArray(data) ? data.slice(0, 3) : [data];
+                let seen = [];
+                try {
+                    const stored = JSON.parse(localStorage.getItem(bannerKey));
+                    if (Array.isArray(stored)) {
+                        seen = stored;
+                    } else {
+                        console.warn("Stored announcement data is not an array:", stored);
+                    }
+                } catch (err) {
+                    console.warn("Failed to parse announcement data from localStorage:", err);
+                }
+                
+                let newDetected = false;
+                list.empty();
+
+                announcements.forEach(item => {
+                    if (!seen.includes(item.message)) newDetected = true;
+                    list.append(`<li>${item.message}</li>`);
+                });
+
+                // Update seen only when user opens dropdown
+                ring.off("click").on("click", () => {
+                    dropdown.toggle();
+                    closeBtn.toggle();
+                    if (newDetected) {
+                        localStorage.setItem(bannerKey, JSON.stringify(announcements.map(a => a.message)));
+                        indicator.hide();
+                    }
+                });
+
+                if (newDetected) {
+                    indicator.show();
+                }
+            },
+            error: function (err) {
+                console.error('Failed to fetch announcements:', err);
+            }
+        });
+    }
+
+    closeBtn.click(() => {
+        dropdown.hide();
+        closeBtn.hide();
+    });
+
+    fetchAndShowAnnouncement();
+});
+
+
 $('#logout-btn').on( 'click',function() {
     Swal.fire({
         title: 'Are you sure you want to logout?',
@@ -278,7 +346,4 @@ $('#logout-btn').on( 'click',function() {
         
 
       });
-}
-);   
-
-
+    });

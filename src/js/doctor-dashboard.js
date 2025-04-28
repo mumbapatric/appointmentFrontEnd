@@ -134,7 +134,6 @@ function closeChat() {
 }
 
 $(document).ready(function() {
-    // Ensure jwt_decode is defined
     if (typeof jwt_decode === 'undefined') {
         console.error('jwt_decode is not defined');
         return;
@@ -342,5 +341,37 @@ $('#logout-btn').on( 'click',function() {
         
 
       });
+
+      //announcements
+function fetchAnnouncements() {
+    $.ajax({
+        url: 'http://192.168.1.133:8080/api/v1/admin/latest', // Replace with your backend API endpoint
+        method: 'GET',
+        success: function(data) {
+            const announcementList = $('#announcement-list');
+            announcementList.empty(); 
+
+            // Handle single object response
+            if (data && typeof data === 'object' && !Array.isArray(data)) {
+                const li = $('<li></li>').text(data.message); // Assuming `message` contains the announcement text
+                announcementList.append(li);
+            } else if (Array.isArray(data)) {
+                // Handle array response
+                data.forEach(function(announcement) {
+                    const li = $('<li></li>').text(announcement.message);
+                    announcementList.append(li);
+                });
+            } else {
+                console.warn('Unexpected response format:', data);
+            }
+        },
+        error: function(error) {
+            console.error('Error fetching announcements:', error);
+        }
+    });
+}
+
+// Call fetchAnnouncements on page load
+$(document).ready(fetchAnnouncements);
 }
 );

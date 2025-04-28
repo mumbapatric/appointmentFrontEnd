@@ -30,7 +30,21 @@
             </ul>
         </nav>
     </aside>
+
+
+    <div id="announcement-banner">
+        <div id="announcement-ring">
+            <i class="fas fa-bell"></i>
+            <span id="announcement-indicator">●</span>
+            <div id="announcement-dropdown">
+                <ul id="announcement-list"></ul>
+            </div>
+        </div>
+        <button id="close-announcement">×</button>
+    </div>
+
     <main class="content">
+          
         <!-- Sections: Dashboard, Appointment History, etc. -->
         <div id="dashboard" class="dashboard section active">
             <header class="header">
@@ -101,7 +115,7 @@
                 </div>
                 <div class="form-group">
                     <label for="fee">Consultation Fee:</label>
-                    <input type="text" id="fee" readonly value="$100">
+                    <input type="text" id="fee" readonly value="TZS 7000">
                 </div>
                 <div class="form-group">
                     <label for="date">Date:</label>
@@ -143,5 +157,8 @@
 </div>
 
 <script src="/src/js/patient-dashboard.js"></script>
+<script>
+
+</script>
 </body>
 </html>
