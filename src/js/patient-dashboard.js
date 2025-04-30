@@ -101,6 +101,18 @@ $(document).ready(function() {
 
     $('#appointmentForm').on('submit', function(e) {
         e.preventDefault();
+        const submitButton = $(this).find('button[type="submit"]');
+        submitButton.prop('disabled', true); // Disable the button after one click
+
+        // Show loader
+        Swal.fire({
+            title: 'Booking Appointment...',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
         fetchPatientDetails(userId).then(function(patient) {
             const appointmentData = {
                 specialization: $('#specialization').val(),
@@ -117,14 +129,32 @@ $(document).ready(function() {
                 contentType: 'application/json',
                 data: JSON.stringify(appointmentData),
                 success: function() {
-                    alert('Appointment booked successfully');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Appointment booked successfully',
+                        showConfirmButton: true
+                    });
                     $('#appointmentForm')[0].reset();
+                    fetchAndDisplayAppointments(); // Refresh the appointments list after booking
                 },
                 error: function(xhr) {
-                    alert('Failed to book appointment: ' + xhr.responseText);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Failed to book appointment',
+                        text: xhr.responseText
+                    });
+                },
+                complete: function() {
+                    submitButton.prop('disabled', false); // Re-enable the button after the request completes
                 }
             });
-        }).catch(() => alert('Failed to fetch patient details'));
+        }).catch(() => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Failed to fetch patient details'
+            });
+            submitButton.prop('disabled', false); // Re-enable the button if fetching patient details fails
+        });
     });
 
     function fetchAndDisplayAppointments() {
@@ -267,14 +297,21 @@ if (token) {
 }
 
 $(document).ready(function () {
-    const bannerKey = "announcement-banner-seen";
-    const ring = $("#announcement-ring");
-    const dropdown = $("#announcement-dropdown");
-    const list = $("#announcement-list");
-    const indicator = $("#announcement-indicator");
-    const closeBtn = $("#close-announcement");
-
     function fetchAndShowAnnouncement() {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            console.error('User not logged in');
+            return;
+        }
+
+        const userId = jwt_decode(token).userId;
+        const bannerKey = `announcement-banner-seen-${userId}`;
+        const ring = $("#announcement-ring");
+        const dropdown = $("#announcement-dropdown");
+        const list = $("#announcement-list");
+        const indicator = $("#announcement-indicator");
+        const closeBtn = $("#close-announcement");
+
         $.ajax({
             url: 'http://192.168.1.133:8080/api/v1/admin/latest',
             method: 'GET',
@@ -293,7 +330,7 @@ $(document).ready(function () {
                 } catch (err) {
                     console.warn("Failed to parse announcement data from localStorage:", err);
                 }
-                
+
                 let newDetected = false;
                 list.empty();
 
@@ -320,12 +357,12 @@ $(document).ready(function () {
                 console.error('Failed to fetch announcements:', err);
             }
         });
-    }
 
-    closeBtn.click(() => {
-        dropdown.hide();
-        closeBtn.hide();
-    });
+        closeBtn.click(() => {
+            dropdown.hide();
+            closeBtn.hide();
+        });
+    }
 
     fetchAndShowAnnouncement();
 });

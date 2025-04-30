@@ -19,24 +19,52 @@ h1, h2 {
     color: #333;
 }
 
+/* Improved styling for the form */
 form {
     margin-bottom: 20px;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 form label {
     display: block;
     margin: 10px 0 5px;
     font-weight: bold;
+    color: #555;
 }
 
 form input, form textarea, form button {
     width: 100%;
     padding: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+form input:focus, form textarea:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+form button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+form button:hover {
+    background-color: #0056b3;
 }
 
 textarea {
     resize: vertical;
+    min-height: 100px;
 }
 
 #records-container {

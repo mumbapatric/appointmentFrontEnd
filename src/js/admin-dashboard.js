@@ -146,7 +146,6 @@ $(document).ready(function() {
         $('#settings-dropdown').toggleClass('show');
     });
 
-    // Add event listeners for Edit Profile and Change Password links
     $('#settings-dropdown a').click(function(e) {
         e.preventDefault();
         var targetUrl = $(this).attr('href');
@@ -214,7 +213,7 @@ $(document).ready(function() {
             return;
         }
 
-        console.log('Attempting to delete doctor with email:', doctorEmail); // Debugging log
+        console.log('Attempting to delete doctor with email:', doctorEmail); 
 
         Swal.fire({
             title: 'Are you sure?',
@@ -246,6 +245,49 @@ $(document).ready(function() {
                             icon: 'error'
                         });
                     }
+                });
+            }
+        });
+    });
+
+    // Handle announcement form submission
+    $('#announcementForm').submit(function(e) {
+        e.preventDefault();
+        const announcementText = $('#announcement').val();
+
+        if (!announcementText.trim()) {
+            Swal.fire({
+                title: 'Error',
+                text: 'Announcement text cannot be empty.',
+                icon: 'error'
+            });
+            return;
+        }
+
+        Swal.fire({
+            title: 'Posting Announcement...',
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        $.ajax({
+            url: 'http://192.168.1.133:8080/api/v1/admin/announcement',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ message: announcementText }),
+            success: function(response) {
+                Swal.fire({
+                    title: 'Announcement Posted Successfully!',
+                    icon: 'success'
+                });
+                $('#announcementForm')[0].reset();
+            },
+            error: function(xhr) {
+                Swal.fire({
+                    title: 'Error Posting Announcement',
+                    text: xhr.responseJSON?.message || 'An error occurred while posting the announcement.',
+                    icon: 'error'
                 });
             }
         });

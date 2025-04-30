@@ -1,6 +1,21 @@
 $(document).ready(function () {
     fetchAllRecords();
 
+
+    $('#show-add-record-form').on('click', function () {
+        $('#form-container').show();
+        $('#form-title').text('Add Medical Record');
+        $('#add-record').show();
+        $('#update-record').hide();
+    });
+
+    // Show Update Record Form
+    $('#show-update-record-form').on('click', function () {
+        $('#form-container').show();
+        $('#form-title').text('Update Medical Record');
+        $('#add-record').hide();
+        $('#update-record').show();
+    });
     // Pre-fill the doctor ID field if the logged-in user is a doctor
     prefillDoctorId();
 
@@ -76,6 +91,16 @@ $(document).ready(function () {
         });
     }
 
+    // Close the form after adding or updating a Medicalrecord
+    function closeForm() {
+        $('#form-container').hide();
+        $('#form-title').text('');
+        $('#add-record').hide();
+        $('#update-record').hide();
+    }
+
+   
+
     // Handle Add Medical Record button click
     $("#add-record").on("click", function () {
         const payload = getFormData();
@@ -89,6 +114,7 @@ $(document).ready(function () {
             success: function () {
                 showMessage("Medical record added successfully!", "success");
                 fetchAllRecords();
+                closeForm(); // Close the form after success
             },
             error: function (xhr) {
                 console.error("Error adding record:", xhr.responseText);
@@ -113,6 +139,7 @@ $(document).ready(function () {
             success: function () {
                 showMessage("Medical record updated successfully!", "success");
                 fetchAllRecords();
+                closeForm(); // Close the form after success
             },
             error: function (xhr) {
                 console.error("Error updating record:", xhr.responseText);

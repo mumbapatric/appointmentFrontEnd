@@ -13,9 +13,15 @@
     <div class="container">
         <h1>Medical Record Management</h1>
 
-        <!-- Form to Add or Update Medical Record -->
-        <div id="form-container">
-            <h2>Add/Update Medical Record</h2>
+        <!-- Buttons to Add or Update Medical Record -->
+        <div id="action-buttons">
+            <button type="button" id="show-add-record-form">Add Medical Record</button>
+            <button type="button" id="show-update-record-form">Update Medical Record</button>
+        </div>
+
+        <!-- Form to Add or Update Medical Record (Initially Hidden) -->
+        <div id="form-container" style="display: none;">
+            <h2 id="form-title">Add/Update Medical Record</h2>
             <form id="medical-record-form">
                 <label for="patient-id">Patient ID:</label>
                 <input type="number" id="patient-id" name="patientId" required>
@@ -29,8 +35,8 @@
                 <label for="notes">Notes:</label>
                 <textarea id="notes" name="notes" required></textarea>
 
-                <button type="button" id="add-record">Add Medical Record</button>
-                <button type="button" id="update-record">Update Medical Record</button>
+                <button type="button" id="add-record" style="display: none;">Add Medical Record</button>
+                <button type="button" id="update-record" style="display: none;">Update Medical Record</button>
             </form>
         </div>
 
@@ -57,8 +63,6 @@
         <div id="message-container"></div>
     </div>
 
-    <!-- Include jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="/src/js/medicalrecord.js"></script>
 </body>
 </html>
