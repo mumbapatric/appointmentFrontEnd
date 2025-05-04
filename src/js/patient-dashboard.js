@@ -198,19 +198,44 @@ $(document).ready(function() {
     }
 
     function cancelAppointment(appointmentId) {
-        if (confirm('Are you sure you want to cancel this appointment?')) {
-            $.ajax({
-                url: `http://192.168.1.133:8080/api/v1/appointments/${appointmentId}`,
-                type: 'DELETE',
-                success: function() {
-                    alert('Appointment cancelled successfully');
-                    fetchAndDisplayAppointments(); // Refresh the appointments list
-                },
-                error: function(xhr) {
-                    alert('Failed to cancel appointment: ' + xhr.responseText);
-                }
-            });
-        }
+        Swal.fire({
+            title: 'Are you sure you want to cancel this appointment?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, cancel it!',
+            cancelButtonText: 'No, keep it'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Show loader
+                Swal.fire({
+                    title: 'Cancelling Appointment...',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
+                $.ajax({
+                    url: `http://192.168.1.133:8080/api/v1/appointments/${appointmentId}`,
+                    type: 'DELETE',
+                    success: function() {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Appointment cancelled successfully',
+                            showConfirmButton: true
+                        });
+                        fetchAndDisplayAppointments(); // Refresh the appointments list
+                    },
+                    error: function(xhr) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Failed to cancel appointment',
+                            text: xhr.responseText
+                        });
+                    }
+                });
+            }
+        });
     }
 
     // Set the minimum date for the appointment date input
