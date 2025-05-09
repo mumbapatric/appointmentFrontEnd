@@ -19,6 +19,8 @@ $(document).ready(function() {
         activateLink($(this));
         if (target === 'appointment-history') {
             fetchAndDisplayAppointments();
+        } else if (target === 'medical-history') {
+            fetchAndDisplayMedicalRecords();
         }
     });
 
@@ -80,7 +82,9 @@ $(document).ready(function() {
                 doctorSelect.empty().append('<option value="">Select Doctor</option>');
                 if (Array.isArray(response)) {
                     response.forEach(doc => {
-                        doctorSelect.append(`<option value="${doc.id}" data-doctor-id="${doc.id}">${doc.name}</option>`);
+                        if (doc.status !== 'FROZEN') { // Exclude frozen doctors
+                            doctorSelect.append(`<option value="${doc.id}" data-doctor-id="${doc.id}">${doc.name}</option>`);
+                        }
                     });
                 } else {
                     console.error('Response is not an array');
@@ -235,6 +239,50 @@ $(document).ready(function() {
                     }
                 });
             }
+        });
+    }
+
+    function fetchAndDisplayMedicalRecords() {
+        fetchPatientDetails(userId).then(function(patient) {
+            console.log('Fetching medical records for patient ID:', patient.id); // Debug log
+            $.ajax({
+                url: `http://192.168.1.133:8080/api/v1/medicalRecords/patient/${patient.id}`,
+                type: 'GET',
+                success: function(data) {
+                    console.log('Medical records fetched:', data); // Debug log
+                    const medicalHistorySection = $('#medical-history');
+                    medicalHistorySection.empty(); // Clear previous content
+
+                    if (!data || !data.length) {
+                        medicalHistorySection.append('<p>No medical history available.</p>');
+                        return;
+                    }
+
+                    const table = $('<table class="medical-history-table"></table>');
+                    const thead = '<thead><tr><th>#</th><th>Date</th><th>Doctor Name</th><th>Note</th></tr></thead>';
+                    table.append(thead);
+
+                    const tbody = $('<tbody></tbody>');
+                    data.forEach((MedicalRecord, index) => {
+                        const row = $(`<tr>
+                            <td>${index + 1}</td>
+                            <td>${MedicalRecord.recordDate || 'N/A'}</td>
+                            <td>${MedicalRecord.doctor?.name || 'N/A'}</td>
+                            <td>${MedicalRecord.notes || 'N/A'}</td>
+                        </tr>`);
+                        tbody.append(row);
+                    });
+                    table.append(tbody);
+                    medicalHistorySection.append(table);
+                },
+                error: function(xhr) {
+                    console.error('Failed to fetch medical records:', xhr.responseText); // Debug log
+                    $('#medical-history').html('<p>Failed to fetch medical history.</p>');
+                }
+            });
+        }).catch(function(error) {
+            console.error('Error fetching patient details:', error); // Debug log
+            $('#medical-history').html('<p>Failed to fetch medical history.</p>');
         });
     }
 
