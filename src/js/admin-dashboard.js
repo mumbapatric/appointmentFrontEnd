@@ -6,6 +6,10 @@ $(document).ready(function() {
         $('#' + target).addClass('active');
         $('nav ul li').removeClass('active');
         $(this).parent().addClass('active');
+
+        // Hide delete and search doctor sections when switching sections
+        $('#delete-doctor-section').hide();
+        $('#search-doctor-section').hide();
     });
 
     $('.create-doctor-btn').click(function(e) {
@@ -213,7 +217,7 @@ $(document).ready(function() {
             return;
         }
 
-        console.log('Attempting to delete doctor with email:', doctorEmail); 
+        console.log('Attempting to delete doctor with email:', doctorEmail);
 
         Swal.fire({
             title: 'Are you sure?',
@@ -241,7 +245,7 @@ $(document).ready(function() {
                         console.error('Error deleting doctor:', xhr); // Debugging log
                         Swal.fire({
                             title: 'Error Deleting Doctor',
-                            text: xhr.responseJSON?.message || 'An error occurred while deleting the doctor.',
+                            text: xhr.responseJSON?.message || 'no doctor found with the given email.',
                             icon: 'error'
                         });
                     }
@@ -287,6 +291,150 @@ $(document).ready(function() {
                 Swal.fire({
                     title: 'Error Posting Announcement',
                     text: xhr.responseJSON?.message || 'An error occurred while posting the announcement.',
+                    icon: 'error'
+                });
+            }
+        });
+    });
+
+    $('.search-doctor-btn').click(function(e) {
+        e.preventDefault();
+        $('#search-doctor-section').toggle(); // Show or hide the search doctor section
+    });
+
+    $('#searchDoctorBtn').click(function(e) {
+        e.preventDefault();
+        const doctorName = $('#searchDoctorName').val().trim();
+
+        if (!doctorName) {
+            Swal.fire({
+                title: 'Error',
+                text: 'Please enter a doctor name to search.',
+                icon: 'error'
+            });
+            return;
+        }
+
+        Swal.fire({
+            title: 'Searching Doctor...',
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        // API call to search doctor by name
+        $.ajax({
+            url: `http://192.168.1.133:8080/api/v1/doctors/doctorName?name=${encodeURIComponent(doctorName)}`,
+            method: 'GET',
+            success: function(response) {
+                Swal.close();
+                const doctorTableBody = $('#doctorTableBody');
+                doctorTableBody.empty(); // Clear existing rows
+
+                if (response.length === 0) {
+                    Swal.fire({
+                        title: 'No Results',
+                        text: 'No doctors found with the given name.',
+                        icon: 'info'
+                    });
+                    return;
+                }
+
+                response.forEach((doctor, index) => {
+                    const row = `<tr>
+                        <td>${index + 1}</td>
+                        <td>${doctor.name}</td>
+                        <td>${doctor.specialization}</td>
+                        <td><button class='view-details-btn' data-id='${doctor.id}'>View Details</button></td>
+                    </tr>`;
+                    doctorTableBody.append(row);
+                });
+
+                // Hide the search section after displaying results
+                $('#search-doctor-section').hide();
+            },
+            error: function(xhr) {
+                Swal.fire({
+                    title: 'Error Searching Doctor',
+                    text: xhr.responseJSON?.message || 'An error occurred while searching for the doctor.',
+                    icon: 'error'
+                });
+            }
+        });
+    });
+
+    $('nav ul li a[data-target="manage-appointments"]').click(function(e) {
+        e.preventDefault();
+
+        // Ensure the appointments section is visible
+        $('.section').removeClass('active');
+        $('#manage-appointments').addClass('active').show(); // Force visibility
+
+        // Show loading alert while fetching appointments
+        Swal.fire({
+            title: 'Fetching Appointments...',
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        // API call to fetch all appointments
+        $.ajax({
+            url: 'http://192.168.1.133:8080/api/v1/appointments',
+            method: 'GET',
+            success: function(response) {
+                console.log('API Response:', response); // Debugging log
+                Swal.close(); // Close the loading alert
+
+                const appointmentTableBody = $('#appointmentTableBody');
+                console.log('Appointment Table Body:', appointmentTableBody); // Debugging log
+                console.log('Is Table Body Visible:', appointmentTableBody.is(':visible')); // Debugging log
+                appointmentTableBody.empty(); // Clear existing rows
+
+                if (response.length === 0) {
+                    console.log('No appointments found in the response.'); // Debugging log
+                    Swal.fire({
+                        title: 'No Appointments Found',
+                        text: 'There are no appointments to display.',
+                        icon: 'info'
+                    });
+                    return;
+                }
+
+                response.forEach((appointment, index) => {
+                    console.log('Processing Appointment:', appointment); // Debugging log
+
+                    const patientName = appointment.patient?.name || 'N/A';
+                    const doctorName = appointment.doctor?.name || 'N/A';
+                    const date = appointment.date || 'N/A';
+                    const time = appointment.time || 'N/A';
+                    const status = appointment.status || 'N/A';
+                    const fees = appointment.fees || 'N/A';
+
+                    const row = `<tr>
+                        <td>${index + 1}</td>
+                        <td>${patientName}</td>
+                        <td>${doctorName}</td>
+                        <td>${date}</td>
+                        <td>${time}</td>
+                        <td>${status}</td>
+                        <td>${fees}</td>
+                        <td><button class='view-details-btn' data-id='${appointment.id}'>View Details</button></td>
+                    </tr>`;
+                    console.log('Appending Row:', row); // Debugging log
+                    appointmentTableBody.append(row);
+                });
+
+                // Force table rendering
+                appointmentTableBody.closest('table').show();
+                console.log('Final Table Content:', appointmentTableBody.html()); // Debugging log
+            },
+            error: function(xhr) {
+                console.error('Error fetching appointments:', xhr); // Debugging log
+                Swal.close(); // Close the loading alert
+                Swal.fire({
+                    title: 'Error',
+                    text: (xhr.responseJSON && xhr.responseJSON.message) || 'An error occurred while fetching appointments.',
                     icon: 'error'
                 });
             }

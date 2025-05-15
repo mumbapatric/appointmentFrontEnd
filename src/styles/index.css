@@ -16,13 +16,13 @@ body {
 
 @keyframes backgroundSlide {
     0% { background-image: url('/images/adhy-savala-zbpgmGe27p8-unsplash.jpg'); }
-    14% { background-image: url('/images/david-fintz-z-Jaxjj0KVY-unsplash.jpg'); }
+  /*  14% { background-image: url('/images/david-fintz-z-Jaxjj0KVY-unsplash.jpg'); }
     28% { background-image: url('/images/pexels-fr3nks-287237.jpg'); }
     42% { background-image: url('/images/pexels-fr3nks-305568.jpg'); }
     56% { background-image: url('/images/pexels-mart-production-7089392.jpg'); }
     70% { background-image: url('/images/pexels-pavel-danilyuk-7108337.jpg'); }
     84% { background-image: url('/images/pexels-shvetsa-3844581.jpg'); }
-    100% { background-image: url('/images/adhy-savala-zbpgmGe27p8-unsplash.jpg'); }
+    100% { background-image: url('/images/adhy-savala-zbpgmGe27p8-unsplash.jpg'); }*/
 }
 
 header {

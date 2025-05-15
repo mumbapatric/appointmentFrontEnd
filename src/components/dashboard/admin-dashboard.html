@@ -47,7 +47,7 @@
                     <h2><i class="fas fa-user"></i> Admin Profile</h2>
                     <button class="update-profile-btn" data-target="edit-profile">Update Profile</button>
                 </div>
-                <div class="appointments-section">
+                <div class="appointments-section" id="appointments-section">
                     <h2>Manage Appointments</h2>
                     <button class="manage-appointments-btn" data-target="manage-appointments">View Appointments</button>
                 </div>
@@ -96,6 +96,7 @@
                         <th>Appointment Date</th>
                         <th>Appointment Time</th>
                         <th>Status</th>
+                        <th>Fee</th>
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -133,6 +134,14 @@
                 <input type="email" id="deleteDoctorEmail" placeholder="Enter doctor's email" required>
             </div>
             <button id="confirmDeleteDoctorBtn" class="submit-btn">Delete Doctor</button>
+        </div>
+        <div id="search-doctor-section" class="search-doctor-section" style="display: none;">
+            <h2>Search Doctor</h2>
+            <div class="form-group">
+                <label for="searchDoctorName">Doctor Name:</label>
+                <input type="text" id="searchDoctorName" placeholder="Enter doctor's name">
+            </div>
+            <button id="searchDoctorBtn" class="submit-btn">Search</button>
         </div>
         <div id="create-doctor-form" class="section">
             <h2>Create Doctor</h2>
